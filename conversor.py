@@ -6,11 +6,15 @@ Los sistemas de numeración admitidos van del 2 al 36
 
 TODO
 
-* Añadir control de versiones git
-* Añadir tratamiento estándar de parámetros: -h (ayuda), -v (verbose)
 * Añadir tema precisión en los decimales de la conversión
 * Añadir módulo de tests
+
+HECHO
+
 * Añadir repositorio github
+* Añadir control de versiones git
+* Añadir tratamiento estándar de parámetros: -h (ayuda), -v (verbose)
+
 
 """
 
@@ -18,36 +22,49 @@ import sys
 
 import calculadora
 
+## -------------------------------------------------------------------
+MENSAJE_AYUDA = """
+    CONVERSOR NUMÉRICO
+    ------------------
+
+    python conversor.py [-h] | <num> <base1> <base2> [-v]
+
+    PARÁMETROS:
+
+        num: La cadena de caracteres (representando un número) a convertir
+        base1: Base numérica de num. Si no concuerda, da error
+        base2: Base numérica a la que se quiere convertir num
+
+        Sin parámetros, el programa se comporta en forma de bucle interactivo
+        que terminará cuando el usuario introduzca (q)uit o (s)alir
+    """
+
 MENSAJE_INPUT = """
-Introduce <número> <base1> <base2> (separados por espacios)
-Para salir, pulsa [q]uit o [s]alir: """
+Introduce <número> <base1> <base2>
+Para salir, pulsa [q]uit o [s]alir: 
+"""
 
 ## -------------------------------------------------------------------
 def ayuda():
     """
-Muestra el mensaje informativo de uso del programa
-"""
-    print("""
-CONVERSOR NUMÉRICO
-------------------
-
-python conversor.py [<num>] [<base1>] [<base2>]
-
-PARÁMETROS:
-
-    num: La cadena de caracteres (representando un número) a convertir
-    base1: Base numérica del número de la entrada. Si no concuerda, da error
-    base2: Base numérica a la que se quiere convertir el número de la entrada
-
-    Sin parámetros, el programa se comporta en forma de bucle interactivo
-    que terminará cuando el usuario introduzca (q)uit o (s)alir
-    """)
+    Muestra el mensaje informativo de uso del programa
+    """
+    
+    print(MENSAJE_AYUDA)
     
 ## -------------------------------------------------------------------
 def main():
     """
-Función principal del programa
-"""
+    Función principal del programa
+    """
+    
+    ## Ver si un parámetro es -v (y eliminarlo)
+    if '-v' in sys.argv:
+        calculadora.DEBUG = True
+        del sys.argv[sys.argv.index('-v')]
+    else:
+        calculadora.DEBUG = False
+        
     ## Los argumentos de la linea de comandos están en
     ## un objeto lista contenido en la variable sys.argv
     num_argumentos = len(sys.argv)
@@ -65,7 +82,7 @@ Función principal del programa
         base1  = sys.argv[2]
         base2  = sys.argv[3]
         modo_comando(numero, base1, base2)
-
+        
     ## Cualquier otra combinación de argumentos: mal -> info y salir
     else:
         ayuda()

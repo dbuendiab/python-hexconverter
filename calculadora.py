@@ -2,7 +2,7 @@
 Contiene las funciones de conversión de números en distintas bases
 """
 
-DEBUG = True
+DEBUG = False
 
 def pprint(*arg, **kwarg):
     if DEBUG:
@@ -89,7 +89,10 @@ def convertir_a_base10(num, base_origen):
     digitos_validos = digitos[:base1]
     pprint("Dígitos válidos:", digitos_validos)
 
-    parte_entera, parte_decimal = num.split(".")
+    if '.' in num:
+        parte_entera, parte_decimal = num.split(".")
+    else:
+        parte_entera, parte_decimal = num, ''
     pprint("La parte entera es %s, la decimal %s" % (parte_entera, parte_decimal))
 
     valor_total = 0
@@ -148,7 +151,7 @@ def convertir_desde_base10(valor_total_b10, base_destino):
     salida = ""
     for k in range(min_key, max_key + 1):
         pprint(k, c.get(k, 0), digitos_validos[c.get(k, 0)])
-        if k == 0:
+        if k == 0 and salida != '':
             salida += '.'
         salida += digitos_validos[c.get(k, 0)]
 
